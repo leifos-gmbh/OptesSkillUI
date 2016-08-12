@@ -1,0 +1,16 @@
+//
+// English Language File for DummyHook Plugin
+//
+
+<!-- language file start -->
+optes_skill_matrix_configuration#:#Optes Skill Matrix Configuration
+rows#:#Zeilen
+cols#:#Spalten
+competences#:#Kompetenzen
+nr#:#Nr
+set_competence#:#Kompetenz zuordnen
+remove_competence#:#Kompetenz entfernen
+overview_all_courses#:#Überblick zu mathematischen Fähigkeiten über alle bearbeiteten Kurse
+detail_skill_pres#:#Details zu allen mathematischen Fähigkeiten
+trigger#:#Auslöser Skill Matrix
+trigger_skill#:#Vom Benutzer ausgewählte Fähigkeit, über der die Matrix angezeigt wird
