@@ -47,8 +47,9 @@ class ilOptesSkillUIUIHookGUI extends ilUIHookPluginGUI
 				// $a_par["main_menu_gui"] is ilMainMenu object
 			// $a_par["main_menu_search_gui"] is ilMainMenuSearchGUI object
 
-			include_once("./Services/Chart/classes/class.ilChartBubble.php");
-			include_once("./Services/Chart/classes/class.ilChartDataBubble.php");
+			$this->getPluginObject()->includeClass("class.ilOptesChart.php");
+			$this->getPluginObject()->includeClass("class.ilChartBubble.php");
+			$this->getPluginObject()->includeClass("class.ilChartDataBubble.php");
 
 			$tpl = $this->getPluginObject()->getTemplate("tpl.skill_addon.html");
 
@@ -94,9 +95,8 @@ class ilOptesSkillUIUIHookGUI extends ilUIHookPluginGUI
 	 */
 	function getChartHTML($a_crs_ref_id, $a_user_id)
 	{
-		include_once("./Services/Chart/classes/class.ilChart.php");
-
-		$chart = ilChart::getInstanceByType(ilChart::TYPE_BUBBLE, "optes_chart_".$a_crs_ref_id);
+		$chart = ilOptesChart::getInstanceByType(ilOptesChart::TYPE_BUBBLE, "optes_chart_".$a_crs_ref_id);
+		$chart->setPluginObject($this->getPluginObject());
 		$chart->setSize(850, 250);
 		//$chart = new ilChartBubble("optes_chart_".$a_crs_ref_id, 850, 250);
 		$pl = $this->getPluginObject();
