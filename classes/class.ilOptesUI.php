@@ -427,12 +427,12 @@ class ilOptesUI
 			}
 			if ($level_cnt == 0 || $cnt_objs == 0)
 			{
-				return 0;
+				return null;
 			}
 			return $val_sum / ($level_cnt * $cnt_objs);
 		}
 		//exit;
-		return 0;
+		return null;
 	}
 
 	/**

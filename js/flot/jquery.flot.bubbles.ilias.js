@@ -52,6 +52,10 @@
 		ctx.strokeStyle = c;
 		ctx.lineWidth = serie.bubbles.lineWidth;
 		ctx.beginPath();
+
+		// patch radius
+		r = r / Math.sqrt(v);
+
 		ctx.arc(x,y,r,0,Math.PI*2,true);
 		ctx.closePath();
 		if (serie.bubbles.fill) { ctx.fill();} else { ctx.stroke(); }

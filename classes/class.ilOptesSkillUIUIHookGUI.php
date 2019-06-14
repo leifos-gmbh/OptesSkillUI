@@ -97,13 +97,42 @@ class ilOptesSkillUIUIHookGUI extends ilUIHookPluginGUI
 	{
 		$chart = ilOptesChart::getInstanceByType(ilOptesChart::TYPE_BUBBLE, "optes_chart_".$a_crs_ref_id);
 		$chart->setPluginObject($this->getPluginObject());
-		$chart->setSize(850, 250);
 		//$chart = new ilChartBubble("optes_chart_".$a_crs_ref_id, 850, 250);
 		$pl = $this->getPluginObject();
 		$pl->includeClass("class.ilOptesUI.php");
 		$o = new ilOptesUI();
 		$rows = $o->getRows();
+
+		// remove rows without data
+		foreach ($o->getCols() as $c)
+		{
+			reset($rows);
+			foreach ($rows as $k => $r)
+			{
+				$val = $o->getCompetenceValueForMatrix($r["id"], $c["id"], $a_user_id, $a_crs_ref_id);
+				if ($val !== null)
+				{
+					$rows[$k]["got_data"] = true;
+				}
+			}
+		}
+		$rows = array_filter($rows, function($r) {
+			return (isset($r["got_data"]));
+		});
+		if (count($rows) == 0)
+		{
+			return '<div class="alert alert-info" role="info">'.
+				'<h5 class="ilAccHeadingHidden"><a id="il_message_focus" name="il_message_focus">Fehlermeldung</a></h5>'.
+				$this->getPluginObject()->txt("no_data_yet").'</div>';
+		}
+
+		// set height
+		$height = (40 * count($rows)) + 50;
+		$chart->setSize(850, $height);
+
+		// fill char
 		$yticks = $xticks = array();
+		$cnt = 0;
 		foreach ($rows as $r)
 		{
 			$yticks[count($rows) - ($cnt++)] = $r["title"];
@@ -122,7 +151,7 @@ class ilOptesSkillUIUIHookGUI extends ilUIHookPluginGUI
 			$chart->addData($cd);
 		}
 		$chart->setTicks($xticks, $yticks, true);
-		$chart->setMinMax(0.5, 0.5 + count($o->getCols()), 0, 1 + count($o->getRows()));
+		$chart->setMinMax(0.5, 0.5 + count($o->getCols()), 0, 1 + count($rows));
 		$chart_html = $chart->getHTML();
 		if ($a_crs_ref_id == 0)
 		{

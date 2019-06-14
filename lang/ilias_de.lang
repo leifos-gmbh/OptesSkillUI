@@ -14,3 +14,4 @@ overview_all_courses#:#Überblick zu mathematischen Fähigkeiten über alle bear
 detail_skill_pres#:#Details zu allen mathematischen Fähigkeiten
 trigger#:#Auslöser Skill Matrix
 trigger_skill#:#Vom Benutzer ausgewählte Fähigkeit, über der die Matrix angezeigt wird
+no_data_yet#:#Es liegen noch keine Kompetenzmessdaten vor.
