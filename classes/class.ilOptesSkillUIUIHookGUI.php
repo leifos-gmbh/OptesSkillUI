@@ -24,9 +24,7 @@ class ilOptesSkillUIUIHookGUI extends ilUIHookPluginGUI
 	 */
 	protected function init()
 	{
-		$this->trigger_childs = [];
 		if (!$this->initialized) {
-
 			$o = new ilOptesUI();
 			$vtree = new ilVirtualSkillTree();
 			$this->trigger_childs = array_map(function ($a) {
@@ -53,14 +51,14 @@ class ilOptesSkillUIUIHookGUI extends ilUIHookPluginGUI
 	{
 		global $lng;
 
-		$this->getPluginObject()->includeClass("class.ilOptesUI.php");
-
-		$this->init();
 
 		// do not show the search part of the main menu
 		// $a_par["main_menu_gui"]
 		if ($a_comp == "Services/Skill" && $a_part == "personal_skill_html")
 		{
+			$this->getPluginObject()->includeClass("class.ilOptesUI.php");
+			$this->init();
+
 			$o = new ilOptesUI();
 
 			if ($o->getTriggerSkill() != $a_par["top_skill_id"])
