@@ -14,6 +14,27 @@ include_once("./Services/UIComponent/classes/class.ilUIHookPluginGUI.php");
 class ilOptesSkillUIUIHookGUI extends ilUIHookPluginGUI
 {
 	protected $involved_courses = array();
+	protected $initialized = false;
+	protected $trigger_childs = [];
+
+	/**
+	 * Init
+	 * @param
+	 * @return
+	 */
+	protected function init()
+	{
+		$this->trigger_childs = [];
+		if (!$this->initialized) {
+
+			$o = new ilOptesUI();
+			$vtree = new ilVirtualSkillTree();
+			$this->trigger_childs = array_map(function ($a) {
+				return $a["id"];
+			}, $vtree->getChildsOfNode($o->getTriggerSkill().":0"));
+			$this->initialized = true;
+		}
+	}
 
 	/**
 	 * Modify HTML output of GUI elements. Modifications modes are:
@@ -32,15 +53,28 @@ class ilOptesSkillUIUIHookGUI extends ilUIHookPluginGUI
 	{
 		global $lng;
 
+		$this->getPluginObject()->includeClass("class.ilOptesUI.php");
+
+		$this->init();
+
 		// do not show the search part of the main menu
 		// $a_par["main_menu_gui"]
 		if ($a_comp == "Services/Skill" && $a_part == "personal_skill_html")
 		{
-			$this->getPluginObject()->includeClass("class.ilOptesUI.php");
 			$o = new ilOptesUI();
 
 			if ($o->getTriggerSkill() != $a_par["top_skill_id"])
 			{
+				$skill_id = $a_par["top_skill_id"];
+				$tref_id = $a_par["tref_id"];
+				if (ilSkillTreeNode::_lookupType($a_par["top_skill_id"]) == "sktr") {
+					$skill_id = ilSkillTemplateReference::_lookupTemplateId($a_par["top_skill_id"]);
+					$tref_id = $a_par["top_skill_id"];
+				}
+				if (in_array($tref_id.":".$skill_id,	$this->trigger_childs)) {
+					return array("mode" => ilUIHookPluginGUI::REPLACE, "html" => "");
+				}
+				//return array("mode" => ilUIHookPluginGUI::REPLACE, "html" => "");
 				return array("mode" => ilUIHookPluginGUI::KEEP, "html" => "");
 			}
 
